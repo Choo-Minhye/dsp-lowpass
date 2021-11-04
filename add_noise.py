@@ -7,6 +7,7 @@ import sounddevice as sd
 # OPEN THE SOUND FILE
 print("Opening the sound file... \n")
 sample_rate, data = wavfile.read('emma.wav')  # load the data
+# sample_rate, data = wavfile.read('183_1b1_Tc_sc_Meditron_16bit.wav')  # load the data
 data = data.T[0]  # select a single channel
 print("Opened successfully..\n")
 print("Sampling Frequency of the signal = ", sample_rate)
@@ -14,7 +15,7 @@ print("Total samples = ", len(data))
 sd.play(data, sample_rate)
 
 print("Data: ", data, data.dtype)
-print("Range of amplitude: ", min(data), max(data))
+# print("Range of amplitude: ", min(data), max(data))
 plt.plot(data)
 plt.title("Time domain")
 plt.ylabel("Amplitude")
@@ -35,7 +36,8 @@ plt.show()
 # NOW ADD NOISE ==============================
 
 m, s = 0, 0.1  # mean and standard deviation
-noise = np.random.normal(0, 800, 384752)
+# noise = np.random.normal(0, 800, 384752)
+noise = np.random.normal(0, 80, 10230)
 plt.plot(noise)
 plt.title("Noise")
 plt.show()
@@ -43,7 +45,7 @@ plt.show()
 noisy_data = data + noise
 noisy_data = noisy_data.astype('int16')
 
-wavfile.write("noisy_sound.wav", sample_rate, noisy_data)
+wavfile.write("noisy_sound_1.wav", sample_rate, noisy_data)
 
 sd.play(noisy_data, sample_rate)
 
