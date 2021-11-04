@@ -8,7 +8,8 @@ import sounddevice as sd
 print("Opening the sound file... \n")
 # sample_rate, data = wavfile.read('noisy_sound.wav')  # load the data
 # sample_rate, data = wavfile.read('183_1b1_Tc_sc_Meditron_16bit.wav')  # load the data
-sample_rate, data = wavfile.read('DP78_Asthma,E W,P R M,20,M.wav')  # load the data
+# sample_rate, data = wavfile.read('DP78_Asthma,E W,P R M,20,M.wav')  # load the data
+sample_rate, data = wavfile.read('DP46_asthma,E W,P L U,41,F.wav')  # load the data
 print("Opened successfully..\n")
 print("Sampling Frequency of the signal = ", sample_rate)
 samples = len(data)
@@ -33,6 +34,14 @@ plt.title("Frequency domain")
 plt.ylabel("Amplitude")
 plt.xlabel("Frequency")
 plt.savefig("original_freq_domain.png", bbox_inches='tight')
+print()
+print()
+print("Range of frequency: ", min(freq_data), max(freq_data))
+print()
+print("frequency: ", freq_data)
+print()
+print()
+
 plt.show()
 
 # NOW REMOVE NOISE ==============================
