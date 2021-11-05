@@ -3,13 +3,31 @@ import matplotlib.pyplot as plt
 from scipy.fftpack import fft, ifft
 from scipy.io import wavfile
 import sounddevice as sd
+from pydub import AudioSegment
+from pydub.silence import detect_silence
+from pydub.silence import detect_nonsilent
+from keras.models import load_model
+# import ffprobe
+from pydub import AudioSegment
+from pydub.silence import detect_silence
+from pydub.silence import detect_nonsilent
+from keras.models import load_model
+
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import librosa
+import sklearn
+import speech_recognition as sr
+import json
+
 
 # OPEN THE SOUND FILE
 print("Opening the sound file... \n")
 # sample_rate, data = wavfile.read('noisy_sound.wav')  # load the data
 # sample_rate, data = wavfile.read('183_1b1_Tc_sc_Meditron_16bit.wav')  # load the data
-# sample_rate, data = wavfile.read('DP78_Asthma,E W,P R M,20,M.wav')  # load the data
-sample_rate, data = wavfile.read('DP46_asthma,E W,P L U,41,F.wav')  # load the data
+sample_rate, data = wavfile.read('DP78_Asthma,E W,P R M,20,M.wav')  # load the data
+# sample_rate, data = wavfile.read('DP46_asthma,E W,P L U,41,F.wav')  # load the data
 print("Opened successfully..\n")
 print("Sampling Frequency of the signal = ", sample_rate)
 samples = len(data)
@@ -67,3 +85,10 @@ plt.savefig("ifft_time_domain.png", bbox_inches='tight')
 plt.show()
 print(len(new_data))
 wavfile.write("denoise.wav", sample_rate, new_data)
+
+# audio, sr = librosa.load("denoise.wav", sr=4000)
+# mfcc = librosa.feature.mfcc(audio, sr=4000, n_mfcc=40, n_fft=400, hop_length=40)
+# mfcc = sklearn.preprocessing.scale(mfcc, axis=1)
+# print(mfcc.shape)
+
+# librosa.display.specshow(mfcc, sr=4000, x_axis='time')
