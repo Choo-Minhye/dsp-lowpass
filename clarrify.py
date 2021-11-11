@@ -1,11 +1,36 @@
 from scipy.io.wavfile import read
+import numpy as np
+import matplotlib.pyplot as plt
+from pydub import AudioSegment
+import os
+import librosa
+
+# t1 = t1 * 1000 #Works in milliseconds
+# t2 = t2 * 1000
+# newAudio = AudioSegment.from_wav("oldSong.wav")
+# newAudio = newAudio[t1:t2]
+# newAudio.export('newSong.wav', format="wav") 
 
 def calc_distances(sound_file):
     #The minimun value for the sound to be recognized as a knock
-    min_val = 3000
+    min_val = 4000
     
     fs, data = read(sound_file)
     data_size = len(data)
+    
+    print("Data: ", data, data.dtype)
+# print("hello for debug?")
+    print("Range of amplitude: ", min(data), max(data))
+    print("Mean of amplitude: ", np.mean(data))
+    print("Standard Deviation of amplitude: ", np.std(data)) # 표준편차
+    plt.plot(data)
+    plt.title("Time domain")
+    plt.ylabel("Amplitude")
+    plt.xlabel("Time (samples)")
+    # plt.savefig("original_time_domain.png", bbox_inches='tight')
+    plt.show()
+    
+    
     
     #The number of indexes on 0.15 seconds
     focus_size = int(0.15 * fs)
@@ -17,6 +42,7 @@ def calc_distances(sound_file):
     while idx < len(data):
         if data[idx] > min_val:
             mean_idx = idx + focus_size // 2
+            # print(mean_idx)
             focuses.append(float(mean_idx) / data_size)
             if len(focuses) > 1:
                 last_focus = focuses[-2]
@@ -27,8 +53,33 @@ def calc_distances(sound_file):
             idx += 1
 
     return distances  
+calc_distances('denoise.wav')
 
-print(calc_distances('denoise.wav'))
+
+
+def trim_audio_data(audio_file, save_file):
+    sr = 96000
+    sec = 3
+
+    y, sr = librosa.load(audio_file, sr=sr)
+
+    ny = y[:sr*sec]
+
+    librosa.output.write_wav(save_file + '.wav', ny, sr)
+
+# base_path = 'dataset/'
+
+audio_path = 'dsp-lowpass/audio'
+save_path = 'dsp-lowpass/save'
+
+
+audio_file = audio_path + '/' + 'denoise.wav'
+save_file = 'split_denoise.wav'[:-4]
+
+trim_audio_data('denoise.wav', save_file)
+
+
+# print(calc_distances('denoise.wav'))
 
 
 # import numpy as np
